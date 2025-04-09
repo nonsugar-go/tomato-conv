@@ -4,6 +4,7 @@ all: clean build
 
 clean:
 	go clean
+	rm -f rsrc_windows_*.syso
 
 build:
 	go generate
