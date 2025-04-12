@@ -3,10 +3,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/charmbracelet/log"
+
 	"github.com/nonsugar-go/tools/tui"
 )
 
@@ -20,10 +21,10 @@ func main() {
 		&devTypeStr, "dev", "", "機器の種類 {fgt|pa}",
 	)
 	flag.StringVar(
-		&confInfo.confFilename, "conf", "", "コンフィグ ファイル",
+		&confInfo.confFilename, "conf", "", "設定ファイル",
 	)
 	flag.StringVar(
-		&confInfo.outFilename, "out", "", "出力ファイル名",
+		&confInfo.outFilename, "out", "", "出力ファイル",
 	)
 	flag.Parse()
 	switch {
@@ -39,25 +40,35 @@ func main() {
 	tui.Title("トマト🍅 の変換ツール")
 	tui.MsgBox("ネットワーク機器の設定ファイルから設定表を作成するツールです")
 
-	/*
-	   	var style = lipgloss.NewStyle().
-	   		BorderStyle(lipgloss.RoundedBorder()).
-	   		BorderForeground(lipgloss.Color("228")).
-	   		BorderBackground(lipgloss.Color("63")).
-	   		BorderTop(true).
-	   		BorderLeft(true).
-	   		BorderRight(true).
-	   		BorderBottom(true).
-	   		PaddingLeft(1).
-	   		PaddingRight(1).
-	   		Width(40)
-	   	fmt.Println(style.Render(`🍅 の変換ツール
-	   ネットワーク機器の設定ファイルから設定表を作成するツールです`))
-	*/
-
 	if confInfo.devType == DevTypeUnknown {
-		//confInfo.devType = confInfo.DevTypeList()
+		confInfo.devType = confInfo.DevTypeList()
+	}
+	if confInfo.confFilename == "" {
+		ext := map[DevType][]string{
+			DevTypeFortiGate: {".conf"},
+			DevTypePaloAlto:  {".xml", ".tgz"},
+		}
+		var err error
+		for {
+			if confInfo.confFilename, err = tui.FilePicker(
+				"", ext[confInfo.devType]); err != nil {
+				log.Fatal("設定ファイルが選択できていません")
+			}
+			break
+		}
+	}
+	if confInfo.outFilename == "" {
+		ext := filepath.Ext(confInfo.confFilename)
+		confInfo.outFilename = strings.TrimRight(
+			confInfo.confFilename, ext) + ".xlsx"
 	}
 
-	log.Info(fmt.Sprintf("confInfo: %s", confInfo))
+	tui.PrintTable([]string{"項目", "選択した値"},
+		[][]string{
+			{"機器の種類", confInfo.devType.String()},
+			{"設定ファイル", confInfo.confFilename},
+			{"出力の種類", confInfo.outType.String()},
+			{"出力ファイル", confInfo.outFilename},
+		})
+	tui.PressAnyKey()
 }
