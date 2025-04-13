@@ -1,11 +1,11 @@
-module github.com/github.com/nonsugar-go/tomato-conv
+module github.com/nonsugar-go/tomato-conv
 
 go 1.24.2
 
 require (
 	github.com/charmbracelet/log v0.4.1
-	github.com/nonsugar-go/tools/excel v0.0.0-20250409142816-ed6b56b97e66
-	github.com/nonsugar-go/tools/tui v0.0.0-20250409142816-ed6b56b97e66
+	github.com/nonsugar-go/tools/excel v0.0.0-20250412130618-c7e2c9328d29
+	github.com/nonsugar-go/tools/tui v0.0.0-20250412130618-c7e2c9328d29
 	github.com/xuri/excelize/v2 v2.9.0
 )
 
@@ -19,6 +19,7 @@ require (
 	github.com/charmbracelet/x/ansi v0.8.0 // indirect
 	github.com/charmbracelet/x/cellbuf v0.0.13-0.20250311204145-2c3ea96c31dd // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect

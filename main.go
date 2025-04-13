@@ -3,11 +3,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"path/filepath"
 	"strings"
 
 	"github.com/charmbracelet/log"
 
+	"github.com/nonsugar-go/tomato-conv/paloalto"
 	"github.com/nonsugar-go/tools/tui"
 )
 
@@ -71,4 +73,14 @@ func main() {
 			{"出力ファイル", confInfo.outFilename},
 		})
 	tui.PressAnyKey()
+
+	switch dtype := confInfo.devType; {
+	case dtype == DevTypePaloAlto:
+		if err := paloalto.ConvertPAConfig(
+			confInfo.confFilename, confInfo.outFilename); err != nil {
+			log.Errorf("PaloAlto の設定表作成が失敗しました: %v", err)
+		}
+	default:
+		log.Info(fmt.Sprintf("%s は未実装です", dtype))
+	}
 }
