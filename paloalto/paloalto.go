@@ -760,7 +760,7 @@ func outputSecurity(xl *excel.Excel, vsys1 *Vsys) error {
 
 // writeExcel outputs parameter sheets to Excel.
 func writeExcel(outFile string, config *Config, vsys1 *Vsys) error {
-	xl, err := excel.NewExcel(outFile)
+	xl, err := excel.New(outFile)
 	if err != nil {
 		return fmt.Errorf("WriteExcel: %w", err)
 	}
